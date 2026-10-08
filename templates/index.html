@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI Compare | AI回答を並べて比較</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script defer src="{{ url_for('static', filename='app.js') }}"></script>
+</head>
+<body>
+<main>
+  <header><span class="eyebrow">YOUR AI WORKSPACE</span><h1>ひとつの質問。<br>3つの視点。</h1><p>ChatGPT・Claude・Gemini の回答を並べて、違いを見つける。</p></header>
+  {% if demo %}<p class="banner">デモモード：外部APIには接続せず、サンプル文を表示します。</p>{% endif %}
+  <form id="ask-form" class="composer">
+    <label for="password">アプリ用パスワード</label>
+    <input id="password" type="password" autocomplete="current-password" required placeholder="管理者が設定したパスワード">
+    <label for="prompt">AIに聞きたいこと</label>
+    <textarea id="prompt" rows="5" maxlength="8000" required placeholder="例：小さなお店で、AIを仕事に取り入れる方法を3つ教えて"></textarea>
+    <div class="actions"><span>入力は3社のAPIへ送信されます。</span><button id="ask-button" type="submit">3つのAIに質問する ↗</button></div>
+  </form>
+  <p id="status" role="status" aria-live="polite">質問を入力して始めましょう。</p>
+  <div class="tabs" role="tablist" aria-label="表示する回答">
+    <button type="button" role="tab" id="tab-all" aria-selected="true" aria-controls="panel-all" data-tab="all">回答一覧</button>
+    <button type="button" role="tab" id="tab-copilot" aria-selected="false" aria-controls="panel-copilot" tabindex="-1" data-tab="copilot">Copilot · 接続待ち</button>
+  </div>
+  <section id="panel-all" role="tabpanel" aria-labelledby="tab-all">
+    <div class="cards">
+      {% for name, label in [('chatgpt','ChatGPT'),('claude','Claude'),('gemini','Gemini')] %}
+      <article class="card {{ name }}"><h2>{{ label }}</h2><p class="model" id="model-{{ name }}">回答待ち</p><div class="answer" id="answer-{{ name }}">ここに回答が表示されます。</div></article>
+      {% endfor %}
+    </div>
+  </section>
+  <section id="panel-copilot" class="card" role="tabpanel" aria-labelledby="tab-copilot" hidden><h2>Copilot</h2><p>接続待ちです。このバージョンにはCopilotへの問い合わせ機能はありません。</p></section>
+  <section class="comparison"><div class="comparison-heading"><div><span class="eyebrow">A SECOND LOOK</span><h2>回答を読み比べる</h2></div><button id="compare-button" type="button" disabled>ChatGPTで比較する</button></div><p class="note">成功した2件以上の回答をOpenAIへ送り、共通点・相違点・統合回答を作成します。追加のAPI利用が発生します。</p><div id="comparison" class="answer" aria-live="polite">回答がそろうと比較できます。</div></section>
+  <footer>各サービスのAPIを利用します。AIの回答と比較結果には誤りが含まれる場合があります。</footer>
+</main>
+</body>
+</html>
