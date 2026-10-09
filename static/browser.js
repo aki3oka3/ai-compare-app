@@ -33,34 +33,19 @@ function question() {
 document.getElementById('copy-prompt').addEventListener('click', async () => {
   const value = question();
   if (!value) return;
-  statusField.textContent = await copyText(value) ? '質問をコピーしました。AIのタブで貼り付けて送信してください。' : 'コピーできませんでした。質問文を選択してコピーしてください。';
-});
-
-document.getElementById('open-all').addEventListener('click', () => {
-  const value = question();
-  if (!value) return;
-  const copiedPromise = copyText(value);
-  document.querySelectorAll('.open-ai').forEach(button => {
-    window.open(button.dataset.url, '_blank', 'noopener,noreferrer');
-  });
-  void copiedPromise.then(copied => {
-    statusField.textContent = copied
-      ? '質問をコピーしました。開いた各タブで貼り付けて送信してください。タブが足りなければ下のボタンで個別に開けます。'
-      : 'AIのタブを開きました。質問文を手動でコピーして貼り付けてください。';
-  });
+  if (await copyText(value)) {
+    statusField.textContent = '質問をコピーしました。次にAIを開き、質問欄をクリックして Ctrl+V で貼り付けてください。';
+  } else {
+    promptField.focus();
+    promptField.select();
+    statusField.textContent = '自動コピーできませんでした。選択された質問文を Ctrl+C でコピーしてください。';
+  }
 });
 
 document.querySelectorAll('.open-ai').forEach(button => {
   button.addEventListener('click', () => {
-    const value = question();
-    if (!value) return;
-    const copiedPromise = copyText(value);
     window.open(button.dataset.url, '_blank', 'noopener,noreferrer');
-    void copiedPromise.then(copied => {
-      statusField.textContent = copied
-        ? `${button.dataset.name}を開きました。新しいタブで貼り付けて送信してください。`
-        : `${button.dataset.name}を開きました。コピーできなかったため、質問文を手動でコピーしてください。`;
-    });
+    statusField.textContent = `${button.dataset.name}を開きました。質問欄をクリックして Ctrl+V で貼り付け、送信してください。`;
   });
 });
 
@@ -77,9 +62,7 @@ document.getElementById('compare-web').addEventListener('click', () => {
     `\n【元の質問】\n${value}`,
     ...answers.map(item => `\n【${item.name}の回答】\n${item.text}`)
   ].join('\n');
-  const copiedPromise = copyText(content);
-  window.open('https://chatgpt.com/', '_blank', 'noopener,noreferrer');
-  void copiedPromise.then(copied => {
-    statusField.textContent = copied ? '比較文をコピーしました。ChatGPTのタブで貼り付けて送信してください。' : 'コピーできませんでした。ブラウザーの設定を確認してください。';
+  void copyText(content).then(copied => {
+    statusField.textContent = copied ? '比較文をコピーしました。ChatGPTを開き、質問欄で Ctrl+V を押してください。' : '比較文をコピーできませんでした。ブラウザーの設定を確認してください。';
   });
 });
