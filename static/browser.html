@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AIタブ比較</title>
+  <link rel="stylesheet" href="style.css">
+  <script defer src="browser.js"></script>
+</head>
+<body>
+<main>
+  <header>
+    <span class="eyebrow">BROWSER MODE · API KEY NOT REQUIRED</span>
+    <h1>質問はひとつ。<br>AIはそれぞれのタブで。</h1>
+    <p>同じ質問をコピーして、ChatGPT・Claude・Gemini・Copilotの公式サイトを開きます。</p>
+  </header>
+  <section class="composer" aria-labelledby="question-title">
+    <h2 id="question-title">共通の質問</h2>
+    <label for="browser-prompt">各AIに聞きたいこと</label>
+    <textarea id="browser-prompt" rows="6" maxlength="8000" placeholder="例：アテモヤとは何か、初心者にもわかるように教えて"></textarea>
+    <div class="actions"><span>この入力欄の内容はサーバーへ送信しません。</span><div><button id="copy-prompt" type="button">質問をコピー</button> <button id="open-all" type="button">4つのAIを開く ↗</button></div></div>
+  </section>
+  <p id="browser-status" role="status" aria-live="polite">質問を書いてから、開きたいAIを選んでください。</p>
+  <div class="cards" aria-label="AIサイト">
+    <article class="card chatgpt"><h2>ChatGPT</h2><p class="model">OpenAI公式サイト</p><button class="open-ai" type="button" data-url="https://chatgpt.com/" data-name="ChatGPT">コピーして開く ↗</button></article>
+    <article class="card claude"><h2>Claude</h2><p class="model">Anthropic公式サイト</p><button class="open-ai" type="button" data-url="https://claude.ai/new" data-name="Claude">コピーして開く ↗</button></article>
+    <article class="card gemini"><h2>Gemini</h2><p class="model">Google公式サイト</p><button class="open-ai" type="button" data-url="https://gemini.google.com/app" data-name="Gemini">コピーして開く ↗</button></article>
+    <article class="card"><h2>Copilot</h2><p class="model">Microsoft公式サイト</p><button class="open-ai" type="button" data-url="https://copilot.microsoft.com/" data-name="Copilot">コピーして開く ↗</button></article>
+  </div>
+  <section class="comparison" aria-labelledby="how-title">
+    <h2 id="how-title">使い方</h2>
+    <p>① 質問を書く → ② 「コピーして開く」でAIを開く → ③ 開いたタブで貼り付けて送信。PCは Ctrl+V、iPhoneは入力欄を長押しして「ペースト」です。</p>
+    <p class="note">タブを開くだけでは質問は送信されません。各サイトへのログインや送信は、ご自身で行います。「4つのAIを開く」で一部のタブが開かない場合は、下の各ボタンから個別に開いてください。</p>
+    <details>
+      <summary>回答を貼り付けて比較する</summary>
+      <p class="note">2件以上の回答を貼り付けると、ChatGPTのWeb版に比較を頼む文章をコピーできます。</p>
+      <label for="answer-chatgpt">ChatGPTの回答</label><textarea id="answer-chatgpt" rows="4" maxlength="24000"></textarea>
+      <label for="answer-claude">Claudeの回答</label><textarea id="answer-claude" rows="4" maxlength="24000"></textarea>
+      <label for="answer-gemini">Geminiの回答</label><textarea id="answer-gemini" rows="4" maxlength="24000"></textarea>
+      <label for="answer-copilot">Copilotの回答</label><textarea id="answer-copilot" rows="4" maxlength="24000"></textarea>
+      <button id="compare-web" type="button">比較文をコピーしてChatGPTを開く ↗</button>
+    </details>
+  </section>
+  <footer>APIキーは不要です。<a href="/">API版へ戻る</a></footer>
+</main>
+</body>
+</html>
